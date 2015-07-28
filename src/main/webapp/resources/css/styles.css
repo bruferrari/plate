@@ -1,0 +1,188 @@
+@charset "utf-8";
+
+body {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal;
+}
+
+.login-body {
+	background-color: #f2f2f2;
+}
+
+header {
+	padding: 5px 0px;
+	margin-bottom: 20px;
+	height: 40px;
+	
+	background-color: #545454;
+	color: #fff;
+	
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+.headerLogo {
+	font-size: 20px; 
+	text-decoration: none;
+}
+
+header > div {
+	margin-left: 8px;
+	margin-top: 5px;
+}
+
+#conteudo {
+	padding: 0px 8px
+} 
+
+footer {
+	padding: 0px 8px;
+	margin-bottom: 10px
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: 500;
+	padding: 0px;
+	margin: 0px;
+}
+
+.div-logo {
+	float: left;
+	padding-top: 5px;
+	padding-left: 20px;
+}
+
+#login-dialog {
+	width: 320px;
+	height: 262px;
+	margin: auto;
+	margin-top: 100px;
+}
+
+.login-logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 25px;
+}
+
+.login-input {
+	height: 30px;
+	width: 272px; 
+	display: block; 
+	background-color: #fbfbfb; 
+	font-size: 22px !important;
+	color: #333 !important;
+	border-radius: 0px !important;
+}
+
+.login-button {
+	float: right;
+	margin-right: .4em !important;
+	color: white;
+	background-color: #0074a2;
+	background: #2ea2cc;
+}
+
+.grid-login {
+	background-color: #fff;
+	box-shadow: 0 1px 3px rgba(0,0,0,.13);
+	width: 320px;
+	height: 262px;
+	padding: 10px;
+}
+
+.login-label {
+	font-size: 14px; 
+	line-height: 1.5em; 
+	font-weight: 400;
+	color: #777;
+	margin-left: .5em !important;
+	padding: 0px !important;
+}
+
+.login-lost-pass {
+	font-size: 14px; 
+	line-height: 1.5em; 
+	font-weight: 400;
+	color: #777;
+	margin-left: 1.8em !important;
+	padding: 0px !important;
+	text-decoration: none;
+}
+
+.rotulo {
+	width: 150px;
+}
+
+.ui-panelgrid td {
+	height: 34px
+}
+
+.ajax-status {
+	position: fixed;
+	top: 55px;
+	right: 10px;
+	width: 35px;
+	height: 35px;
+}
+
+.ajax-status-lost-pass {
+	position: absolute;
+	padding-left: 500px;
+}
+
+.ui-selectmanycheckbox td {
+	border-width: 0px !important;
+	padding: 0px !important;
+}
+
+.ui-selectoneradio td {
+	border-width: 0px !important;
+	padding: 3px !important;
+}
+
+
+.ui-selectmanycheckbox td label {
+	padding-right: 10px !important;
+}
+
+.produto-tabela input {
+	width: 99%
+}
+
+/* Customiza TabView - início */
+.ui-tabs .ui-tabs-panel {
+    padding: 0.5em 0.2em !important;
+}
+
+.ui-tabs {
+    padding: 0px !important;
+}
+
+.ui-tabs .ui-tabs-nav {
+    margin: -1px !important;
+}
+
+.ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    padding: 0px !important;
+}
+/* Customiza TabView - fim */
+
+/* Menu sistema inicio */
+.menu-sistema {
+    border: 0px !important;
+    padding: 0px !important;
+    background: none !important;
+}
+
+.menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem-text {
+    color: #ffffff !important;
+}
+
+.menu-sistema .ui-icon-triangle-1-s {
+    background: url(#{resource['images:seta-para-baixo.png']}) no-repeat;
+}
+/* Menu sistema fim */

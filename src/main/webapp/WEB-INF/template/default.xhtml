@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="titulo">Plate</ui:insert></title>
+	<h:outputStylesheet library="css" name="styles.css" />
+	<h:outputScript library="js" name="scripts.js" />
+</h:head>
+
+<h:body>
+	<header>
+	<div class="div-logo">
+		<h:outputLabel styleClass="headerLogo">Plate ERP</h:outputLabel>
+	</div>
+
+	<div style="float: right; margin-right: 110px">
+		<span
+			style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
+			
+		</span>
+
+		<h:form style="display: inline-block">
+			<p:menubar styleClass="menu-sistema">
+				<p:submenu label="Menu">
+					<p:menuitem value="Option 1" />
+					<p:menuitem value="Option 2" />
+					<p:menuitem value="Option 3" />
+					<p:menuitem value="Option 4" />
+				</p:submenu>
+
+				<p:menuitem style="margin-right: 5px" value="Logout"/>
+			</p:menubar>
+		</h:form>
+	</div>
+	<div style="clear: both"></div>
+	</header>
+
+	<div id="conteudo">
+		<ui:insert name="corpo" />
+	</div>
+
+	<p:separator style="margin-top: 20px" />
+
+	<footer> Plate <a href="http://www.plateerp.com.br" 
+		style="text-decoration: none"
+		target="_blank"> - www.plateerp.com.br</a>
+		<div style="float: right">Plate v0.1</div></footer>
+
+</h:body>
+
+</html>

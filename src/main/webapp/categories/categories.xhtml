@@ -1,0 +1,131 @@
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="corpo">
+		<f:event listener="#{categoriesBean.getAllCategories}"
+			type="preRenderView" />
+		<h:form id="frmCategories">
+			<h1>Pesquisa de Categorias</h1>
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Nova categoria" icon="ui-icon-plus"
+						oncomplete="PF('dlgNewCategory').show()" process="@this"
+						update=":frmCategories:dialogNewCategory" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px;" columnClasses="rotulo, campo">
+				<p:outputLabel value="Descrição" />
+				<p:inputText size="60" />
+			</p:panelGrid>
+
+			<p:messages autoUpdate="true" closable="true"  />
+
+			<p:dataTable id="categoriesTable"
+				value="#{categoriesBean.categories}" var="category"
+				style="margin-top: 20px"
+				emptyMessage="Nenhuma categoria encontrada." rows="20"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				<p:column headerText="Descrição"
+					style="text-align: left; width: 500px">
+					<h:outputText value="#{category.description}" />
+				</p:column>
+
+				<p:column headerText="Data de modificação"
+					style="text-align: left; width: 200px">
+					<h:outputText value="#{category.date_mod}" />
+				</p:column>
+
+				<p:column style="text-align: center; width: 50px">
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						oncomplete="PF('dlgEditCategory').show()" process="@this"
+						update=":frmCategories:dialogEditCategory">
+						<f:setPropertyActionListener value="#{category}"
+							target="#{categoriesBean.category}" />
+						
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('confirmDelete').show()" process="@this" 
+						update=":frmCategories:confirmDeleteDlg">
+						<f:setPropertyActionListener value="#{category}"
+							target="#{categoriesBean.category}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			
+			<p:confirmDialog widgetVar="confirmDelete" id="confirmDeleteDlg"
+				header="Excluir"
+				message="Tem certeza que deseja excluir a categoria?">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Sim" icon="ui-icon-check"
+					oncomplete="PF('confirmDelete').hide()"
+					action="#{categoriesBean.deleteCategory}"
+					update=":frmCategories:categoriesTable"
+					process="@this" />
+					<p:commandButton value="Não" icon="ui-icon-cancel"
+					oncomplete="PF('confirmDelete').hide(); return false;" 
+					process="@this"/>
+				</h:panelGrid>
+			</p:confirmDialog>
+			
+			<p:dialog widgetVar="dlgEditCategory" id="dialogEditCategory"
+				resizable="false" draggable="false" modal="true"
+				header="Edição de categoria" width="500px">
+				<h:form id="frmEditCategory">
+					<h:panelGrid id="pnlEditCategory" columns="2" cellpadding="3">
+						<p:outputLabel value="Descrição" for="txtDescription"/>
+						<p:inputText id="txtDescription" required="true" size="50"
+							requiredMessage="Por favor insira a descrição."
+							value="#{categoriesBean.category.description}"/>
+							
+						<p:button value="Cancelar" icon="ui-icon-cancel"
+							onclick="PF('dlgEditCategory').hide(); return false;"/>
+							
+						<p:commandButton value="Salvar" icon="ui-icon-disk"
+							oncomplete="PF('dlgEditCategory').hide()"
+							action="#{categoriesBean.editCategory}"
+							process="@form"
+							update=":frmCategories:categoriesTable"/>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<p:dialog widgetVar="dlgNewCategory" id="dialogNewCategory"
+				resizable="false" draggable="false" modal="true"
+				header="Nova categoria" width="500px">
+				<h:form id="frmNewCategory">
+					<h:panelGrid id="pnlNewCategory" columns="2" cellpadding="3">
+						<p:outputLabel value="Descrição" for="txtDescription"/>
+						<p:inputText id="txtDescription" required="true" size="50"
+							requiredMessage="Por favor insira a descrição."
+							value="#{categoriesBean.category.description}"/>
+							
+						<p:button value="Cancelar" icon="ui-icon-cancel"
+							onclick="PF('dlgNewCategory').hide(); return false;"/>
+							
+						<p:commandButton value="Salvar" icon="ui-icon-disk"
+							oncomplete="PF('dlgNewCategory').hide()"
+							action="#{categoriesBean.saveCategory}"
+							process="@form"
+							update=":frmCategories:categoriesTable"/>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+		</h:form>
+		
+			
+	</ui:define>
+</ui:composition>
