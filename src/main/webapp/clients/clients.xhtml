@@ -1,0 +1,300 @@
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="corpo">
+		<f:event listener="#{clientsBean.getAllClients}" type="preRenderView" />
+		<h:form id="frmClients">
+			<h1>Clientes</h1>
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form"
+						action="#{clientsBean.search}" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo cliente" icon="ui-icon-plus"
+						oncomplete="PF('dlgNewClient').show()" process="@this"
+						update=":dialogNewClient" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px;" columnClasses="rotulo, campo">
+				<p:outputLabel value="Nome / Razão" />
+				<p:inputText size="60" value="#{clientsBean.filter.nome}" />
+			</p:panelGrid>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:dataTable id="clientsTable" value="#{clientsBean.clients}"
+				var="client" style="margin-top: 20px"
+				emptyMessage="Nenhum cliente encontrado." rows="20" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+				<p:column headerText="Nome / Razão"
+					style="text-align: left; width: 250px">
+					<h:outputText value="#{client.name}" />
+				</p:column>
+
+				<p:column headerText="Documento RF"
+					style="text-align: left; width: 100px">
+					<h:outputText value="#{client.doc}" />
+				</p:column>
+
+				<p:column headerText="Email" style="text-align: left; width: 100px">
+					<h:outputText value="#{client.email}" />
+				</p:column>
+
+				<p:column headerText="Telefone"
+					style="text-align: left; width: 100px">
+					<h:outputText value="#{client.phone}" />
+				</p:column>
+
+				<p:column headerText="Tipo" style="text-align: left; width: 100px">
+					<h:outputText value="#{client.type}" />
+				</p:column>
+
+				<p:column style="text-align: center; width: 50px">
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						oncomplete="PF('dlgEditClient').show()" process="@this"
+						update=":dialogEditClient">
+						<f:setPropertyActionListener value="#{client}"
+							target="#{clientsBean.client}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('dlgDeleteClient').show()" process="@this"
+						update=":dialogDeleteClient">
+
+						<f:setPropertyActionListener value="#{client}"
+							target="#{clientsBean.client}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog widgetVar="dlgNewClient" id="dialogNewClient"
+				resizable="false" draggable="false" modal="true"
+				header="Novo cliente" width="800px">
+				<h:form id="frmNewClient">
+					<h:panelGrid id="pnlNewClient" columns="4" cellspacing="20"
+						style="width: 100%; margin-top:20px; margin-bottom: 20px;">
+
+						<p:outputLabel value="Tipo" for="somType" />
+						<p:selectOneMenu id="somType" style="width: 100px" required="true"
+							requiredMessage="Selecione um tipo"
+							value="#{clientsBean.client.type}">
+
+							<p:ajax
+								update="groupDocLabel groupDocInput groupNameLabel groupNameInput"
+								process="@this" event="change" />
+
+							<f:selectItem itemLabel="FÍSICA" itemValue="FISICA" />
+							<f:selectItem itemLabel="JURÍDICA" itemValue="JURIDICA" />
+						</p:selectOneMenu>
+
+						<h:panelGrid id="groupNameLabel">
+
+							<p:outputLabel value="Nome"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:outputLabel value="Razão social"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupNameInput">
+
+							<p:inputText id="txtName" required="true" size="40"
+								requiredMessage="Por favor insira o nome do cliente"
+								value="#{clientsBean.client.name}"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:inputText id="txtCompany" required="true" size="40"
+								requiredMessage="Por favor insira a razão social do cliente"
+								value="#{clientsBean.client.name}"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupDocLabel">
+
+							<p:outputLabel value="CPF"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:outputLabel value="CNPJ"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupDocInput">
+
+							<p:inputMask id="txtDocCpf" required="true" size="20"
+								requiredMessage="Por favor insira o CPF do cliente"
+								value="#{clientsBean.client.doc}"
+								rendered="#{clientsBean.client.type eq 'FISICA'}"
+								mask="999.999.999-99" />
+
+
+							<p:inputMask id="txtDocCnpj" required="true" size="20"
+								requiredMessage="Por favor insira o CNPJ do cliente"
+								value="#{clientsBean.client.doc}"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}"
+								mask="99.999.999/9999-99" />
+
+						</h:panelGrid>
+
+						<p:outputLabel value="e-mail" for="txtEmail" />
+						<p:inputText id="txtEmail" required="true" size="40"
+							requiredMessage="O e-mail informado não é valido"
+							value="#{clientsBean.client.email}" />
+
+						<p:outputLabel value="Telefone" for="txtPhone" />
+						<p:inputMask id="txtPhone" required="true" size="20"
+							requiredMessage="Por favor insira um telefone para contato"
+							value="#{clientsBean.client.phone}" mask="(99) 9999-9999" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Cadastrar" icon="ui-icon-plus"
+							style="height: 40px;" action="#{clientsBean.save}"
+							process="@form" oncomplete="PF('dlgNewClient').hide()"
+							update=":frmClients:clientsTable" />
+						<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+							style="height: 40px;" oncomplete="PF('dlgNewClient').hide()"
+							process="@this" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog widgetVar="dlgDeleteClient" id="dialogDeleteClient"
+				resizable="false" draggable="false" modal="true"
+				header="Deseja realmente excluir cliente?" width="600px">
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:outputLabel value="Nome" />
+					<p:outputLabel value="#{clientsBean.client.name}" />
+
+					<p:outputLabel value="CPF" />
+					<p:outputLabel value="#{clientsBean.client.doc}" />
+
+					<p:outputLabel value="e-mail" />
+					<p:outputLabel value="#{clientsBean.client.email}" />
+
+					<p:outputLabel value="Telefone" />
+					<p:outputLabel value="#{clientsBean.client.phone}" />
+
+					<p:outputLabel value="Tipo" />
+					<p:outputLabel value="#{clientsBean.client.type}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir" icon="ui-icon-trash"
+						action="#{clientsBean.delete}" style="height: 40px"
+						oncomplete="PF('dlgDeleteClient').hide()" process="@this"
+						update=":frmClients:clientsTable" />
+
+					<p:button value="Cancelar" icon="ui-icon-cancel"
+						onclick="PF('dlgDeleteClient').hide()" style="height: 40px" />
+				</h:panelGrid>
+			</p:dialog>
+
+			<p:dialog widgetVar="dlgEditClient" id="dialogEditClient"
+				resizable="false" draggable="false" modal="true"
+				header="Editar cliente" width="800px">
+				<h:form id="frmEditClient">
+					<h:panelGrid id="pnlEditClient" columns="4" cellspacing="20"
+						style="width: 100%; margin-top:20px; margin-bottom: 20px;">
+
+						<p:outputLabel value="Tipo" for="somType" />
+						<p:selectOneMenu id="somType" style="width: 100px" required="true"
+							requiredMessage="Selecione um tipo"
+							value="#{clientsBean.client.type}">
+
+							<p:ajax
+								update="groupDocLabel groupDocInput groupNameLabel groupNameInput"
+								process="@this" event="change" />
+
+							<f:selectItem itemLabel="FÍSICA" itemValue="FISICA" />
+							<f:selectItem itemLabel="JURÍDICA" itemValue="JURIDICA" />
+						</p:selectOneMenu>
+
+						<h:panelGrid id="groupNameLabel">
+
+							<p:outputLabel value="Nome"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:outputLabel value="Razão social"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupNameInput">
+
+							<p:inputText id="txtName" required="true" size="40"
+								requiredMessage="Por favor insira o nome do cliente"
+								value="#{clientsBean.client.name}"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:inputText id="txtCompany" required="true" size="40"
+								requiredMessage="Por favor insira a razão social do cliente"
+								value="#{clientsBean.client.name}"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupDocLabel">
+
+							<p:outputLabel value="CPF"
+								rendered="#{clientsBean.client.type eq 'FISICA'}" />
+
+							<p:outputLabel value="CNPJ"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}" />
+
+						</h:panelGrid>
+
+						<h:panelGrid id="groupDocInput">
+
+							<p:inputMask id="txtDocCpf" required="true" size="20"
+								requiredMessage="Por favor insira o CPF do cliente"
+								value="#{clientsBean.client.doc}"
+								rendered="#{clientsBean.client.type eq 'FISICA'}"
+								mask="999.999.999-99" />
+
+
+							<p:inputMask id="txtDocCnpj" required="true" size="20"
+								requiredMessage="Por favor insira o CNPJ do cliente"
+								value="#{clientsBean.client.doc}"
+								rendered="#{clientsBean.client.type eq 'JURIDICA'}"
+								mask="99.999.999/9999-99" />
+
+						</h:panelGrid>
+
+						<p:outputLabel value="e-mail" for="txtEmail" />
+						<p:inputText id="txtEmail" required="false" size="40"
+							value="#{clientsBean.client.email}" />
+
+						<p:outputLabel value="Telefone" for="txtPhone" />
+						<p:inputMask id="txtPhone" required="true" size="20"
+							requiredMessage="Por favor insira um telefone para contato"
+							value="#{clientsBean.client.phone}" mask="(99) 9999-9999" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Editar" icon="ui-icon-check"
+							style="height: 40px;" action="#{clientsBean.update}"
+							process="@form" oncomplete="PF('dlgEditClient').hide()"
+							update=":frmClients:clientsTable" />
+						<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+							style="height: 40px;" oncomplete="PF('dlgEditClient').hide()"
+							process="@this" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+	</ui:define>
+</ui:composition>

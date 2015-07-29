@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.plate.dao.impl.ClientsDAOImpl;
 import com.plate.dao.model.ClientsDAO;
 import com.plate.model.Clients;
+import com.plate.model.ClientsFilter;
 
 
 public class ClientsTests {
@@ -49,7 +50,10 @@ public class ClientsTests {
 	@Ignore
 	public void testSearch() {
 		ClientsDAO dao = new ClientsDAOImpl();
-		List<Clients> clients = dao.search("ta");
+		ClientsFilter filter = new ClientsFilter();
+		filter.setNome("bruno");
+		
+		List<Clients> clients = dao.search(filter);
 		if(clients.size() > 0)
 			System.out.println(clients);
 		else

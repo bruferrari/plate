@@ -10,8 +10,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author bruno ferrari
@@ -54,6 +56,7 @@ public class Clients implements Serializable {
 		this.name = name;
 	}
 
+	@NotBlank
 	@Column(name="client_doc")
 	public String getDoc() {
 		return doc;
@@ -64,6 +67,8 @@ public class Clients implements Serializable {
 	}
 
 	@Column(name="email")
+	@NotEmpty
+	@Pattern(regexp = ".+@.+\\.[a-z]+", message="o endereço de e-mail deve ser válido.")
 	public String getEmail() {
 		return email;
 	}

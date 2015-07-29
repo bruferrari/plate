@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.plate.dao.impl.ClientsDAOImpl;
 import com.plate.dao.model.ClientsDAO;
 import com.plate.model.Clients;
+import com.plate.model.ClientsFilter;
 import com.plate.util.jsf.JSFUtil;
 
 /**
@@ -70,6 +71,21 @@ public class ClientsService implements Serializable {
 					+ " Por favor contate o administrador do sistema.");
 			logger.error("EXCEPTION: " + e.getMessage());
 		}
+	}
+	
+	public List<Clients> search(ClientsFilter filter) {
+		ClientsDAO dao = new ClientsDAOImpl();
+		List<Clients> clients = null;
+		
+		try{
+			clients = dao.search(filter);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JSFUtil.addErrorMessage("Ocorreu um erro ao tentar efetuar a pesquisa."
+					+ " Por favor contate o administrador do sistema.");
+			logger.error("EXCEPTION: " + e.getMessage());
+		}
+		return clients;
 	}
 
 }

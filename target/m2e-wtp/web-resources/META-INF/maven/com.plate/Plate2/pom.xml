@@ -58,6 +58,13 @@
 			<version>5.2</version>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- Primefaces All Themes -->
+		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.8</version>
+		</dependency>
 
 		<!-- Mojarra (implementacao do JSF) -->
 		<dependency>

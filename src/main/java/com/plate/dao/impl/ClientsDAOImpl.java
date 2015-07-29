@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.plate.dao.model.ClientsDAO;
 import com.plate.model.Clients;
+import com.plate.model.ClientsFilter;
 import com.plate.util.hibernate.HibernateUtil;
 
 public class ClientsDAOImpl implements ClientsDAO, Serializable {
@@ -77,13 +78,13 @@ public class ClientsDAOImpl implements ClientsDAO, Serializable {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Clients> search(String keyword) {
+	public List<Clients> search(ClientsFilter filter) {
 		List<Clients> clients = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		try {
 			Criteria criteria = session.createCriteria(Clients.class);
-			criteria.add(Restrictions.ilike("name", keyword, MatchMode.ANYWHERE));
+			criteria.add(Restrictions.ilike("name", filter.getNome(), MatchMode.ANYWHERE));
 			clients = criteria.list();
 		} catch (RuntimeException ex) {
 			throw ex;
