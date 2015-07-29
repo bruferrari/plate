@@ -3,11 +3,13 @@ package com.plate.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.plate.dao.model.ClientsDAO;
@@ -81,17 +83,18 @@ public class ClientsDAOImpl implements ClientsDAO, Serializable {
 	public List<Clients> search(ClientsFilter filter) {
 		List<Clients> clients = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		
+		Criteria criteria = session.createCriteria(Clients.class);
 		try {
-			Criteria criteria = session.createCriteria(Clients.class);
-			criteria.add(Restrictions.ilike("name", filter.getNome(), MatchMode.ANYWHERE));
-			clients = criteria.list();
+			if (StringUtils.isNotBlank(filter.getNome())) {
+				criteria.add(Restrictions.ilike("name", filter.getNome(), MatchMode.ANYWHERE));
+				clients = criteria.list();
+			}
+			return criteria.addOrder(Order.asc("name")).list();
 		} catch (RuntimeException ex) {
 			throw ex;
 		} finally {
 			session.close();
 		}
-		return clients;
 	}
 
 }

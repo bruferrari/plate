@@ -32,11 +32,6 @@ public class ClientsBean implements Serializable {
 
 	private List<Clients> clients;
 	private ClientsFilter filter;
-
-	@PostConstruct
-	public void init() {
-		System.out.println("initializing clients bean...");
-	}
 	
 	public ClientsBean() {
 		filter = new ClientsFilter();

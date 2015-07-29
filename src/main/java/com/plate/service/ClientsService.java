@@ -79,6 +79,7 @@ public class ClientsService implements Serializable {
 		
 		try{
 			clients = dao.search(filter);
+			System.out.println("SEARCH RESULT =====> " + clients);
 		} catch (Exception e) {
 			e.printStackTrace();
 			JSFUtil.addErrorMessage("Ocorreu um erro ao tentar efetuar a pesquisa."
