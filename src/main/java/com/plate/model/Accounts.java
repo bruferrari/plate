@@ -99,7 +99,7 @@ public class Accounts implements Serializable{
 		this.banks = banks;
 	}
 	
-	@NotNull
+	
 	@Column(name = "balance_final", precision = 11, scale = 2, nullable = false)
 	public BigDecimal getBalance_final() {
 		return balance_final;
