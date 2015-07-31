@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{accountsBean.load}" type="preRenderView"></f:event>
+			<f:event listener="#{accountsBean.search}" type="preRenderView"></f:event>
+			
+		</f:metadata>
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form id="frmAccount">
+			<h1>Contas bancárias</h1>
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form"
+						actionListener="#{accountsBean.search}" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Adicionar conta bancária"
+						icon="ui-icon-plus" action="#{accountsBean.clean}"
+						oncomplete="PF ('DlgAcc').show();"
+						process="@this" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="search" autoUpdate="false" closable="true" />
+
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px;" columnClasses="rotulo, campo">
+				<p:outputLabel value="Descrição" />
+				<p:inputText size="60" value="#{accountsBean.filter.name}" />
+			</p:panelGrid>
+
+
+			<p:dataTable id="accountTable" var="account" style="margin-top: 20px"
+				emptyMessage="Nenhum registro encontrado." rows="20"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" value="#{accountsBean.accounts}">
+
+				<p:column headerText="Descrição"
+					style="text-align: center; width: 150px">
+					<h:outputText value="#{account.description}" />
+				</p:column>
+
+				<p:column headerText="Tipo" style="text-align: center; width: 100px">
+					<h:outputText value="#{account.type}" />
+				</p:column>
+
+				<p:column headerText="Banco"
+					style="text-align: center; width: 150px">
+					<h:outputText value="#{account.banks.description}" />
+				</p:column>
+
+
+				<p:column style="text-align: center; width: 50px">
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						oncomplete="PF('dlgEdit').show()" process="@this"
+						update=":dialogEdit">
+						<f:setPropertyActionListener value="#{account}"
+							target="#{accountsBean.account}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('dlgDelete').show()" process="@this"
+						update=":dialogDelete">
+						<f:setPropertyActionListener value="#{account}"
+							target="#{accountsBean.account}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<!-- Dialog New -->
+		<p:dialog closable="true" draggable="true" modal="true"
+			resizable="false" header="Nova Conta" widgetVar="DlgAcc"
+			appendTo="@(body)">
+			<h:form id="frmDlg">
+				<h:panelGrid columns="1" style="width: 100%">
+					<p:messages id="dlgValidator" autoUpdate="true" closable="true" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" id="painel"
+					style="width: 100%; margin-top: 20px;"
+					columnClasses="rotulo, campo" cellpadding="5">
+
+					<p:outputLabel value="Banco" />
+					<p:selectOneMenu value="#{accountsBean.account.banks}"
+						converter="bankConverter">
+						<f:selectItem itemValue="" itemLabel="Selecione" />
+						<f:selectItems value="#{accountsBean.listBanks}" var="banks"
+							itemValue="#{banks}" itemLabel="#{banks.description}" />
+						<!--Item Value: obj dentro da lista  -->
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Tipo" />
+					<p:selectOneMenu value="#{accountsBean.account.type}">
+						<f:selectItem itemLabel="Fisica" itemValue="Fisica" />
+						<f:selectItem itemLabel="Jurídica" itemValue="Jurídica" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao" size="60" maxlength="60"
+						value="#{accountsBean.account.description}" />
+
+					<p:outputLabel value="Saldo inicial" for="saldo" />
+					<p:inputText id="saldo" size="13" maxlength="13"
+						value="#{accountsBean.account.balance}" styleClass="moeda">
+						<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+					</p:inputText>
+
+					<p:outputLabel value="Data do saldo" for="data" />
+					<p:calendar id="data" size="10" pattern="dd/MM/yyyy"
+						value="#{accountsBean.account.balanceDate}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar Conta" action="#{accountsBean.save}"
+						update="@	" style="height:40px"
+						icon="ui-icon-check" />
+					<p:commandButton value="Cancelar" onclick="PF ('DlgAcc').hide();"
+						style="height:40px" icon="ui-icon-cancel" process="@this" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+		<!-- Dialog Edit -->
+		<p:dialog closable="true" draggable="true" modal="true"
+			resizable="false" header="Editar Conta" widgetVar="dlgEdit" id="dialogEdit"
+			appendTo="@(body)">
+			<h:form id="frmDlgEdt">
+				<h:panelGrid columns="1" style="width: 100%">
+					<p:messages id="dlgValidatorEdt" autoUpdate="true" closable="true" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" id="painel"
+					style="width: 100%; margin-top: 20px;"
+					columnClasses="rotulo, campo" cellpadding="5">
+
+					<p:outputLabel value="Banco" />
+					<p:selectOneMenu value="#{accountsBean.account.banks}"
+						converter="bankConverter">
+						<f:selectItem itemValue="" itemLabel="Selecione" />
+						<f:selectItems value="#{accountsBean.listBanks}" var="banks"
+							itemValue="#{banks}" itemLabel="#{banks.description}" />
+						<!--Item Value: obj dentro da lista  -->
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Tipo" />
+					<p:selectOneMenu value="#{accountsBean.account.type}">
+						<f:selectItem itemLabel="Fisica" itemValue="Fisica" />
+						<f:selectItem itemLabel="Jurídica" itemValue="Jurídica" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao" size="60" maxlength="60"
+						value="#{accountsBean.account.description}" />
+
+					<p:outputLabel value="Saldo inicial" for="saldo" />
+					<p:inputText id="saldo" size="13" maxlength="13"
+						value="#{accountsBean.account.balance}" styleClass="moeda">
+						<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+					</p:inputText>
+
+					<p:outputLabel value="Data do saldo" for="data" />
+					<p:calendar id="data" size="10" pattern="dd/MM/yyyy"
+						value="#{accountsBean.account.balanceDate}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" action="#{accountsBean.update}"
+						update="dlgValidatorEdt frmDlgEdt" style="height:40px"
+						icon="ui-icon-check" />
+					<p:commandButton value="Cancelar" onclick="PF ('DlgAccEdt').hide();"
+						style="height:40px" icon="ui-icon-cancel" process="@this" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+
+
+
+		<!-- Dialog Delete -->
+		<p:dialog widgetVar="dlgDelete" id="dialogDelete"
+			resizable="false" draggable="false" modal="true"
+			header="Deseja realmente excluir a Conta?" width="600px">
+			<h:form id="frmDelete">
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel value="Descrição" />
+				<p:outputLabel value="#{accountsBean.account.description}" />
+
+				<p:outputLabel value="Banco" />
+				<p:outputLabel value="#{accountsBean.account.banks.description}" />
+
+				<p:outputLabel value="Tipo" />
+				<p:outputLabel value="#{accountsBean.account.type}" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					action="#{accountsBean.delete}" style="height: 40px"
+					oncomplete="PF('dlgDelete').hide()" 
+					update="frmAccount:accountTable" />
+
+				<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+					oncomplete="PF('dlgDelete').hide()" style="height: 40px"
+					process="@this" action="#{accountsBean.clean}" />
+			</h:panelGrid>
+		</h:form>
+		</p:dialog>
+
+
+
+
+	</ui:define>
+</ui:composition>

@@ -10,9 +10,9 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/plate_db</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/plate_db?createDatabaseIfNotExist=true</property>
 		<property name="connection.username">root</property>
-		<property name="connection.password">root</property>
+		<property name="connection.password"></property>
 
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
@@ -30,10 +30,14 @@
 		<property name="show_sql">true</property>
 
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">validate</property>
+		<property name="hbm2ddl.auto">validade</property>
 
-		<mapping class="com.plate.model.Categories" />
+		<mapping class="com.plate.model.Categories" /> 
 		<mapping class="com.plate.model.Clients" />
+		<mapping class="com.plate.model.Accounts"/>
+	    <mapping class="com.plate.model.Banks"/>
+		
+		
 	</session-factory>
 
 </hibernate-configuration>
