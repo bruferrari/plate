@@ -36,25 +36,30 @@
 				emptyMessage="Nenhum cliente encontrado." rows="20" paginator="true"
 				paginatorAlwaysVisible="false" paginatorPosition="bottom">
 				<p:column headerText="Nome / Razão"
-					style="text-align: left; width: 250px">
+					style="text-align: left; width: 250px"
+					sortBy="#{client.name}">
 					<h:outputText value="#{client.name}" />
 				</p:column>
 
 				<p:column headerText="Documento RF"
-					style="text-align: left; width: 100px">
+					style="text-align: left; width: 100px"
+					sortBy="#{client.doc}">
 					<h:outputText value="#{client.doc}" />
 				</p:column>
 
-				<p:column headerText="Email" style="text-align: left; width: 100px">
+				<p:column headerText="Email" style="text-align: left; width: 100px"
+					sortBy="#{client.email}">
 					<h:outputText value="#{client.email}" />
 				</p:column>
 
 				<p:column headerText="Telefone"
-					style="text-align: left; width: 100px">
+					style="text-align: left; width: 100px"
+					sortBy="#{client.phone}">
 					<h:outputText value="#{client.phone}" />
 				</p:column>
 
-				<p:column headerText="Tipo" style="text-align: left; width: 100px">
+				<p:column headerText="Tipo" style="text-align: left; width: 100px"
+					sortBy="#{client.type}">
 					<h:outputText value="#{client.type}" />
 				</p:column>
 

@@ -44,11 +44,13 @@
 				</p:column>
 
 				<p:column headerText="Data de modificação"
-					style="text-align: left; width: 200px">
-					<h:outputText value="#{category.date_mod}" />
+					style="text-align: left">
+					<h:outputText value="#{category.date_mod}" style="text-align: center;">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
 				</p:column>
 
-				<p:column style="text-align: center; width: 50px">
+				<p:column style="text-align: center; width: 100px">
 					<p:commandButton icon="ui-icon-pencil" title="Editar"
 						oncomplete="PF('dlgEditCategory').show()" process="@this"
 						update=":frmCategories:dialogEditCategory">
@@ -73,8 +75,10 @@
 					oncomplete="PF('confirmDelete').hide()"
 					action="#{categoriesBean.deleteCategory}"
 					update=":frmCategories:categoriesTable"
-					process="@this" />
-					<p:commandButton value="Não" icon="ui-icon-cancel"
+					process="@this"
+					style="height: 40px" />
+					<p:commandButton value="Não"
+					icon="ui-icon-cancel" style="height: 40px"
 					oncomplete="PF('confirmDelete').hide(); return false;" 
 					process="@this"/>
 				</h:panelGrid>
@@ -90,14 +94,16 @@
 							requiredMessage="Por favor insira a descrição."
 							value="#{categoriesBean.category.description}"/>
 							
-						<p:button value="Cancelar" icon="ui-icon-cancel"
-							onclick="PF('dlgEditCategory').hide(); return false;"/>
-							
 						<p:commandButton value="Salvar" icon="ui-icon-disk"
 							oncomplete="PF('dlgEditCategory').hide()"
 							action="#{categoriesBean.editCategory}"
 							process="@form"
-							update=":frmCategories:categoriesTable"/>
+							update=":frmCategories:categoriesTable"
+							style="height: 40px"/>
+							
+						<p:button value="Cancelar" icon="ui-icon-cancel"
+							onclick="PF('dlgEditCategory').hide(); return false;"
+							style="height: 40px"/>
 					</h:panelGrid>
 				</h:form>
 			</p:dialog>
@@ -112,14 +118,16 @@
 							requiredMessage="Por favor insira a descrição."
 							value="#{categoriesBean.category.description}"/>
 							
-						<p:button value="Cancelar" icon="ui-icon-cancel"
-							onclick="PF('dlgNewCategory').hide(); return false;"/>
-							
 						<p:commandButton value="Salvar" icon="ui-icon-disk"
 							oncomplete="PF('dlgNewCategory').hide()"
 							action="#{categoriesBean.saveCategory}"
 							process="@form"
-							update=":frmCategories:categoriesTable"/>
+							update=":frmCategories:categoriesTable"
+							style="height: 40px"/>
+							
+							<p:button value="Cancelar" icon="ui-icon-cancel"
+							onclick="PF('dlgNewCategory').hide(); return false;"
+							style="height: 40px"/>
 					</h:panelGrid>
 				</h:form>
 			</p:dialog>

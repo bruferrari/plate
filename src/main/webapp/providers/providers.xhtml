@@ -1,0 +1,154 @@
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="navigator">
+		<a href="/Plate2">Dashboard</a> 
+			> <a>Fornecedores</a> 
+	</ui:define>
+
+	<ui:define name="corpo">
+		<f:event listener="#{providersBean.search}" type="preRenderView" />
+		<h:form id="frmProviders">
+			<h1>Fornecedores</h1>
+			
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form"
+						action="#{providersBean.search}" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="Novo fornecedor" icon="ui-icon-plus"
+						outcome="/providers/provider" />
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px;" columnClasses="rotulo, campo">
+				
+				<h:selectOneRadio value="#{providersBean.radioResult}">
+					<p:ajax update="groupSearchInput" process="@this" event="change" />
+					<f:selectItem itemLabel="RS" itemValue="razao" />
+					<f:selectItem itemLabel="CNPJ" itemValue="cnpj" />
+				</h:selectOneRadio>
+				<h:panelGrid id="groupSearchInput">
+					<p:inputText size="60" value="#{providersBean.filter.name}"
+					rendered="#{providersBean.radioResult eq 'razao'}" />
+					
+					<p:inputMask value="#{providersBean.filter.doc}"
+					rendered="#{providersBean.radioResult eq 'cnpj'}" 
+					mask="99.999.999/9999-99"/>
+				</h:panelGrid>
+				
+			</p:panelGrid>
+
+			<p:dataTable id="providersTable" value="#{providersBean.providers}"
+				var="provider" style="margin-top: 20px"
+				emptyMessage="Nenhum fornecedor encontrado." rows="20"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				<p:column headerText="Razão social"
+					style="text-align: left; width: 150px" sortBy="#{provider.name}">
+					<h:outputText value="#{provider.name}" />
+				</p:column>
+
+				<p:column headerText="CNPJ" style="text-align: left; width: 100px"
+					sortBy="#{provider.doc}">
+					<h:outputText value="#{provider.doc}" />
+				</p:column>
+
+				<p:column headerText="Localização"
+					style="text-align: left; width: 100px" sortBy="#{provider.city}">
+					<h:outputText value="#{provider.city.nome}" />
+				</p:column>
+
+				<p:column style="text-align: center; width: 50px">
+
+					<p:commandButton title="Visualizar" icon="ui-icon-script"
+						oncomplete="PF('dlgDetailsProvider').show()"
+						update=":frmProviders:dialogDetailsProvider"
+						process="@this">
+						
+						<f:setPropertyActionListener value="#{provider}"
+							target="#{providersBean.provider}" />
+						
+						</p:commandButton>
+
+					<p:button icon="ui-icon-pencil" title="Editar"
+						outcome="/providers/provider">
+						<f:param name="provider" value="#{provider.id}" />
+					</p:button>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('dlgDeleteProvider').show()"
+						update=":frmProviders:dialogDeleteProvider" process="@this">
+
+						<f:setPropertyActionListener value="#{provider}"
+							target="#{providersBean.provider}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog widgetVar="dlgDeleteProvider" id="dialogDeleteProvider"
+				header="Exlusão de fornecedor" resizable="false" draggable="false"
+				modal="true">
+				<h:form>
+					<h:panelGrid>
+						<p:outputLabel
+							value="Deseja realmente excluir #{providersBean.provider.name} ?" />
+					</h:panelGrid>
+					<h:panelGrid columns="2" cellspacing="10">
+						<p:commandButton value="Sim" icon="ui-icon-trash"
+							action="#{providersBean.delete}"
+							oncomplete="PF('dlgDeleteProvider').hide()" process="@this"
+							update=":frmProviders:providersTable"
+							style="height: 40px" />
+						<p:button value="Não" icon="ui-icon-cancel"
+							onclick="PF('dlgDeleteProvider').hide()" 
+							style="height: 40px"/>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<p:dialog widgetVar="dlgDetailsProvider" id="dialogDetailsProvider"
+				header="Detalhes de #{providersBean.provider.name}" resizable="false" draggable="false"
+				modal="true">
+				<h:form>
+					<h:panelGrid columns="6" cellpadding="10">
+						<p:outputLabel value="Razão social" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.name}" />
+						
+						<p:outputLabel value="CNPJ" style="font-weight: bold" />
+						<p:outputLabel value="#{providersBean.provider.doc}" />
+						
+						<p:outputLabel value="Localização" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.city.nome}" />
+						
+						<p:outputLabel value="Endereço" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.address}" />
+						
+						<p:outputLabel value="Bairro" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.district}" />
+						
+						<p:outputLabel value="e-mail" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.email}" />
+						
+						<p:outputLabel value="Telefone" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.phone}" />
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" cellpadding="10" style="">
+						<p:outputLabel value="Observações" style="font-weight: bold"/>
+						<p:outputLabel value="#{providersBean.provider.obs}" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

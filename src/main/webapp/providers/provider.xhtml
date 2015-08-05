@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui">
+	
+	<ui:define name="navigator">
+		<a href="/Plate2">Dashboard</a> 
+			> <a href="/Plate2/providers/providers.xhtml">Fornecedores</a> 
+			> <a>#{providersBean.editing ? 'Edição de Fornecedor' : 'Novo Fornecedor'}</a>
+	</ui:define>
+
+	<ui:define name="corpo">
+	<f:metadata>
+			<o:viewParam name="provider" value="#{providersBean.provider}" />
+		</f:metadata>
+		
+		<f:viewParam name="dummy" />
+		<f:event listener="#{providersBean.listAllProvinces}" type="preRenderView" />
+		
+		<h:form id="frmNewProvider">
+			<h1>#{providersBean.editing ? 'Edição de Fornecedor' : 'Novo Fornecedor'}</h1>
+			<p:messages autoUpdate="true" closable="true" />
+			
+			<h:panelGrid columns="4" cellpadding="10" style="margin-top: 30px">
+
+				<p:outputLabel value="Razão Social" />
+				<p:inputText value="#{providersBean.provider.name}" size="60"
+					required="true" 
+					requiredMessage="O campo razão social deve ser preenchido"/>
+
+				<p:outputLabel value="E-mail" />
+				<p:inputText value="#{providersBean.provider.email}" size="30" />
+
+				<p:outputLabel value="CNPJ" />
+				<p:inputMask value="#{providersBean.provider.doc}" size="20"
+					mask="99.999.999/9999-99" 
+					required="true"
+					requiredMessage="O campo CNPJ deve ser preenchido"/>
+
+				<p:outputLabel value="Telefone" />
+				<p:inputMask value="#{providersBean.provider.phone}" size="20"
+					mask="(99) 9999-9999" />
+
+			</h:panelGrid>
+			<h2>Informações adicionais</h2>
+			<h:panelGrid columns="4" cellpadding="10">
+				<p:outputLabel value="UF" />
+				<p:selectOneMenu style="width: 150px" value="#{providersBean.selectedProvince}">
+				<p:ajax listener="#{providersBean.listAllCities}" update="citySelection" />	
+					<f:selectItem itemLabel="Selecione o estado"  />
+					<f:selectItems value="#{providersBean.provinces}" var="province"
+						itemLabel="#{province.sigla}"
+						itemValue="#{province.id}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Endereço" />
+				<p:inputText value="#{providersBean.provider.address}" size="50" />
+				
+				<p:outputLabel value="Cidade" />
+				<p:selectOneMenu id="citySelection" style="width: 150px" 
+					value="#{providersBean.provider.city}">
+					
+					<f:selectItems value="#{providersBean.cities}" var="city"
+						itemLabel="#{city.nome}" itemValue="#{city}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Bairro" />
+				<p:inputText value="#{providersBean.provider.district}" size="30" />
+			</h:panelGrid>
+		
+			<h:panelGrid cellspacing="10">
+				<p:outputLabel value="Observações" />
+				<p:inputTextarea rows="5" cols="30" counter="display"
+					style="width: 500px" maxlength="200"
+					counterTemplate="{0} Caracteres restantes" autoResize="false"
+					value="#{providersBean.provider.obs}" />
+				<h:outputText id="display" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar" icon="ui-icon-check"
+					style="height: 40px;"
+					action="#{providersBean.saveOrUpdate}"
+					update="@form"
+					process="@form">
+
+				</p:commandButton>
+				<p:button value="Cancelar" icon="ui-icon-cancel"
+					outcome="/providers/providers.xhtml" style="height: 40px;" />
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

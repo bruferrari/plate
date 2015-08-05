@@ -11,7 +11,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
+/**
+ * @author bruno ferrari
+ *
+ */
 
 @Entity
 @Table(name="cf_categories")
@@ -59,7 +62,4 @@ public class Categories implements Serializable {
 		return "Categories [id=" + id + ", description=" + description
 				+ ", date_mod=" + date_mod + "]";
 	}
-	
-	
-
 }

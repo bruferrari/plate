@@ -30,6 +30,7 @@
 				<p:submenu label="Cadastros">
 					<p:menuitem value="Clientes" outcome="/clients/clients.xhtml"/>
 					<p:menuitem value="Categorias" outcome="/categories/categories.xhtml"/>
+					<p:menuitem value="Fornecedores" outcome="/providers/providers.xhtml"/>
 				</p:submenu>
 
 				<p:menuitem style="margin-right: 5px" value="Logout"/>
@@ -38,6 +39,9 @@
 	</div>
 	<div style="clear: both"></div>
 	</header>
+	<div id="nav">
+		<ui:insert name="navigator" />
+	</div>
 
 	<div id="conteudo">
 		<ui:insert name="corpo" />

@@ -34,6 +34,9 @@
 
 		<mapping class="com.plate.model.Categories" />
 		<mapping class="com.plate.model.Clients" />
+		<mapping class="com.plate.model.Providers" />
+		<mapping class="com.plate.model.Provinces" />
+		<mapping class="com.plate.model.Cities" />
 	</session-factory>
 
 </hibernate-configuration>
