@@ -5,6 +5,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" 
 	xmlns:o="http://omnifaces.org/ui">
+	
+	<ui:define name="navigator">
+		<a href="/Plate2">Dashboard</a> 
+			> <a>Cadastros</a> > <a>Categorias</a> 
+	</ui:define>
 
 	<ui:define name="corpo">
 		<f:event listener="#{categoriesBean.getAllCategories}"

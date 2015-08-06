@@ -8,6 +8,7 @@
 	
 	<ui:define name="navigator">
 		<a href="/Plate2">Dashboard</a> 
+			> <a>Cadastros</a>
 			> <a href="/Plate2/providers/providers.xhtml">Fornecedores</a> 
 			> <a>#{providersBean.editing ? 'Edição de Fornecedor' : 'Novo Fornecedor'}</a>
 	</ui:define>
@@ -61,7 +62,7 @@
 				
 				<p:outputLabel value="Cidade" />
 				<p:selectOneMenu id="citySelection" style="width: 150px" 
-					value="#{providersBean.provider.city}">
+					value="#{providersBean.provider.city}" filter="true">
 					
 					<f:selectItems value="#{providersBean.cities}" var="city"
 						itemLabel="#{city.nome}" itemValue="#{city}" />
