@@ -27,5 +27,8 @@ public interface CategoriesDAO {
 	 * @return
 	 */
 	List<Categories> search(String keyword);
+	
+	
+	Categories findId(Long id);
 
 }

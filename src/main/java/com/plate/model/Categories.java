@@ -19,7 +19,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="cf_categories")
 @NamedQueries({
-	@NamedQuery(name="Categories.list", query="SELECT categories FROM Categories categories")
+	@NamedQuery(name="Categories.list", query="SELECT categories FROM Categories categories"),
+	@NamedQuery(name = "Categories.findId", query = "SELECT categories FROM Categories categories WHERE "
+			+ "categories.id = :id")
 })
 public class Categories implements Serializable {
 

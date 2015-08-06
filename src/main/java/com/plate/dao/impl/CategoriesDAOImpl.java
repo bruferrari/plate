@@ -97,5 +97,22 @@ public class CategoriesDAOImpl implements CategoriesDAO, Serializable {
 		return categories;
 	}
 
+	@Override
+	public Categories findId(Long id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		// Recebe o resultado da conculta
+		Categories categories = null;
+		try {
+			Query consulta = session.getNamedQuery("Categories.findId");
+			consulta.setLong("id", id);
+			categories = (Categories) consulta.uniqueResult(); // CAST: converte
+		} catch (RuntimeException e) {
+			throw e;
+		} finally {
+			session.close();
+		}
+		return categories;
+	}
+	
 
 }
