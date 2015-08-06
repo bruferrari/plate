@@ -11,6 +11,7 @@
 	<title><ui:insert name="titulo">Plate</ui:insert></title>
 	<h:outputStylesheet library="css" name="styles.css" />
 	<h:outputScript library="js" name="scripts.js" />
+	 <h:outputScript library="js" name="jquery.maskMoney.js"/>
 </h:head>
 
 <h:body>
@@ -54,6 +55,15 @@
 		target="_blank"> - www.plateerp.com.br</a>
 		<div style="float: right">Plate v0.1</div></footer>
 
+	<script>
+			function configurarMoeda() {
+				$(".moeda").maskMoney({ decimal: ",", thousands: ".", allowZero: true });
+			}
+			
+			$(document).ready(function() {
+				configurarMoeda();
+			});
+		</script>
 </h:body>
 
 </html>

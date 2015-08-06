@@ -10,7 +10,7 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/plate_db</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/plate_db?createDatabaseIfNotExist=true</property>
 		<property name="connection.username">root</property>
 		<property name="connection.password">root</property>
 
@@ -37,6 +37,8 @@
 		<mapping class="com.plate.model.Providers" />
 		<mapping class="com.plate.model.Provinces" />
 		<mapping class="com.plate.model.Cities" />
+		<mapping class="com.plate.model.Accounts"/>
+	    <mapping class="com.plate.model.Banks"/>
 	</session-factory>
 
 </hibernate-configuration>

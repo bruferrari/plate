@@ -1,0 +1,192 @@
+<ui:composition template="/WEB-INF/template/default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui">
+	
+	<ui:define name="corpo">
+	<h:form>
+			<h1>Contas a Pagar</h1>
+				
+				<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form" />
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Adicionar pagamento" icon="ui-icon-plus" 
+					oncomplete="PF ('DlgPay').show();"  process="@this"/>
+				</p:toolbarGroup>
+				</p:toolbar>
+	
+	
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px;" columnClasses="rotulo, campo">
+				<p:outputLabel value="Descrição" />
+				<p:inputText size="60" />
+				
+				<p:outputLabel value="Conta bancária"/>
+				<p:inputText size="60"/>
+				
+				<p:outputLabel value="Data de vencimento" />
+				<p:calendar size="10" pattern="dd/MM/yyyy"/>
+			</p:panelGrid>
+
+			<p:messages autoUpdate="true" closable="true"  />
+			
+			
+			<p:dataTable id="categoriesTable"
+			    var="category"
+				style="margin-top: 20px"
+				emptyMessage="Nenhum registro encontrado." rows="20"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				
+				<p:column headerText="Descrição"
+					style="text-align: center; width: 150px">
+					<h:outputText value="Usinainfo" />
+				</p:column>
+				
+				<p:column headerText="Conta bancaria"
+					style="text-align: center; width: 100px">
+					<h:outputText value="2345-90" />
+				</p:column>
+				
+				<p:column headerText="Data de vencimento" style="text-align: center; width: 100px">
+	    			<h:outputText >
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Fornecedor"
+					style="text-align: center; width: 200px">
+					<h:outputText value="2345-90" />
+				</p:column>
+				
+				
+				<p:column headerText="Opções" style="width: 100px; text-align: center">
+				<p:button value="Editar">
+				</p:button>
+
+
+				<p:button value="Excluir">
+				</p:button>
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+		
+		
+			<p:dialog closable="true" draggable="true" modal="true" resizable="false"
+			 header="Novo Pagamento" widgetVar="DlgPay" appendTo="@(body)">
+				<h:form id="frmDlg">
+					
+					<h:panelGrid columns="4" style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo, rotulo, campo" cellpadding="5">
+						
+						<p:outputLabel value="Descrição"/>
+						<p:inputText size="60"/> 
+						
+						<p:outputLabel value="Categoria" />
+						<p:selectOneMenu>
+						<f:selectItem itemLabel="Selecione..."/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Conta bancária"/>
+						<p:selectOneMenu>
+						<f:selectItem itemLabel="Selecione..."/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Data da vencimento" for="dateExpiration" />
+						<p:calendar id="dateExpiration" size="10" pattern="dd/MM/yyyy"/>
+						
+						<p:outputLabel value="Fornecedor" />
+						<p:selectOneMenu>
+						<f:selectItem itemLabel="Selecione..."/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Valor"/>
+						<p:inputText size="10" styleClass="moeda">
+								<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+						</p:inputText> 
+						
+				
+						<p:separator/>
+						<p:separator/>
+						<p:separator/>
+						<p:separator/>
+						
+						<h:panelGrid columns="2"  style="width: 50%">
+							<input type="checkbox" name="chk" id="chk1" value="1"/>	
+							<p:outputLabel value="Repetir"/>
+						</h:panelGrid>
+						
+						<p:spacer />
+						<p:spacer />
+				
+						<p:outputLabel />
+						<p:selectOneMenu>
+						<f:selectItem itemLabel="Mensalmente"/>
+						</p:selectOneMenu>
+						
+						<h:panelGrid columns="1"  style="width: 50%">
+							<p:outputLabel value="Ocorrências"/>	
+							<p:inputText size="10"/>
+						</h:panelGrid>
+					
+						<p:spacer />
+						<p:spacer />
+						
+						<p:separator/>
+						<p:separator/>
+						<p:separator/>
+						<p:separator/>
+						
+						<h:panelGrid columns="2"  style="width: 50%">
+							<input type="checkbox" name="chk" id="chk1" value="1"/>	
+							<p:outputLabel value="Pago"/>
+						</h:panelGrid>
+						
+						<p:spacer />
+						<p:spacer />
+						<p:spacer />
+				
+					   
+					   	<p:calendar id="data" size="10" pattern="dd/MM/yyyy" />
+						
+						<h:panelGrid columns="1"  style="width: 50%">
+							<p:outputLabel value="Desconto"/>	
+							<p:inputText size="10" styleClass="moeda">
+									<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+							</p:inputText>
+						</h:panelGrid>
+						<h:panelGrid columns="1"  style="width: 50%">
+							<p:outputLabel value="Juros/Multa"/>	
+							<p:inputText size="10" styleClass="moeda">
+									<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+							</p:inputText>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="1"  style="width: 50%">
+							<p:outputLabel value="Valor Pago"/>	
+							<p:inputText size="10"/>
+						</h:panelGrid>
+
+						
+						
+					</h:panelGrid>
+			
+					
+					<h:panelGrid columns="2" >
+						<p:commandButton value="Salvar Pagamento" style="height:40px" icon="ui-icon-check"/>
+						<p:commandButton value="Cancelar" onclick="PF ('DlgPay').hide();" style="height:40px" icon="ui-icon-cancel"/>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+	
+			
+	</ui:define>
+</ui:composition>
