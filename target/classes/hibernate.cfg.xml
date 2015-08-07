@@ -30,7 +30,7 @@
 		<property name="show_sql">true</property>
 
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">validate</property>
+		<property name="hbm2ddl.auto">create</property>
 
 		<mapping class="com.plate.model.Categories" />
 		<mapping class="com.plate.model.Clients" />
@@ -39,6 +39,8 @@
 		<mapping class="com.plate.model.Cities" />
 		<mapping class="com.plate.model.Banks" />
 		<mapping class="com.plate.model.Accounts" />
+		<mapping class="com.plate.model.AccountsToPay" />
+
 
 	</session-factory>
 
